@@ -24,7 +24,14 @@ def main(argv: Optional[list[str]] = None) -> int:
 
     # Read and parse
     if args.input:
-        env = load_from_file(args.input)
+        try:
+            env = load_from_file(args.input)
+        except OSError as exc:
+            print(
+                f"env2json: cannot read '{args.input}': {exc.strerror or exc}",
+                file=sys.stderr,
+            )
+            return 1
     else:
         env = parse_env_lines(_read_input(args.input))
 
